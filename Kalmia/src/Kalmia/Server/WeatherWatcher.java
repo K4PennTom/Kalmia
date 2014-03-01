@@ -1,3 +1,4 @@
+package Kalmia.Server;
 import java.text.DecimalFormat;
 
 import com.amphibian.weather.request.Feature;

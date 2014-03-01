@@ -1,3 +1,5 @@
+package Kalmia.Server;
+
 
 public class StatusBarUpdater extends Thread{
 	private StatusBar statusBar;

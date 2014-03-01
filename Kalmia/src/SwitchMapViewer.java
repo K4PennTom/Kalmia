@@ -15,6 +15,9 @@ import java.util.LinkedList;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import Kalmia.Server.StatusBar;
+import Kalmia.Server.SwitchController;
+
 
 public class SwitchMapViewer extends JPanel{
 	/**
@@ -90,35 +93,54 @@ public class SwitchMapViewer extends JPanel{
 			//System.out.println("drawing type: "+mode);
 			Graphics2D g2d = (Graphics2D)g;
 			//System.out.println("Switch areas #: " + switchAreas.size());
-			for(int i=0; i<switchAreas.size(); i++) {
-				//System.out.println("printing" + i);
-
-				if(mode == CLIMATE_STATUS) drawPolygon(g2d, switchAreas.get(i).getShape(),switchAreas.get(i).getStatus());
-				else if(mode == CLIMATE_SET_POINT){
-					String tmp = switchAreas.get(i).getThermoMode();
-					//System.out.println("Mode = " + switchAreas.get(i).getThermoMode());
-					try{
-						if(tmp.compareTo("1")==0||tmp.compareTo("2")==0){
-							drawPolygon(g2d, switchAreas.get(i).getShape(),switchAreas.get(i).getSP());
+			for (int i = 0; i < switchAreas.size()-1; i++) {
+				// System.out.println("printing" + i);
+				try {
+					if (mode == CLIMATE_STATUS)
+						drawPolygon(g2d, switchAreas.get(i).getShape(),
+								switchAreas.get(i).getStatus());
+					else if (mode == CLIMATE_SET_POINT) {
+						String tmp = switchAreas.get(i).getThermoMode();
+						// System.out.println("Mode = " +
+						// switchAreas.get(i).getThermoMode());
+						try {
+							if (tmp.compareTo("1") == 0
+									|| tmp.compareTo("2") == 0) {
+								drawPolygon(g2d, switchAreas.get(i).getShape(),
+										switchAreas.get(i).getSP());
+							}
+						} catch (NullPointerException e) {
 						}
-					}catch(NullPointerException e){}
+					} else if (mode == LIGHTS_STATUS) {
+						// System.out.println("drawing light status");
+						drawPolygon(g2d, switchAreas.get(i).getShape(),
+								switchAreas.get(i).getStatus());
+					} else if (mode == LIGHTS_SET_POINT) {
+						// System.out.println("drawing light SP");
+						if (switchAreas.get(i).getSwitchState())
+							drawPolygon(g2d, switchAreas.get(i).getShape(),
+									"255");
+						else
+							drawPolygon(g2d, switchAreas.get(i).getShape(), "0");
+					}
+					// draw temperature legend
+					if ((mode == CLIMATE_STATUS) || (mode == CLIMATE_SET_POINT)) {
+						// TODO
+						drawLegend(g2d);
+					}
+					// System.out.println("drawing area.  mode = "+mode);
+				} catch (NullPointerException e){
+					String text = "";
+					if(mode == CLIMATE_STATUS)
+						text = "Climate_Stat";
+					else if(mode == CLIMATE_SET_POINT)
+						text = "Climate_SP";
+					else if(mode == LIGHTS_STATUS)
+						text = "Lights_Stat";
+					else if(mode == LIGHTS_SET_POINT)
+						text = "Lights_SP";
+					System.out.println("SwitchMapViewer "+text+": " + switchAreas.get(i).getTitle() + " is null!");
 				}
-				else if(mode == LIGHTS_STATUS){
-					//System.out.println("drawing light status");
-					drawPolygon(g2d, switchAreas.get(i).getShape(),switchAreas.get(i).getStatus());
-				}
-				else if(mode == LIGHTS_SET_POINT){
-					//System.out.println("drawing light SP");
-					if(switchAreas.get(i).getSwitchState())	drawPolygon(g2d, switchAreas.get(i).getShape(),"255");
-					else drawPolygon(g2d, switchAreas.get(i).getShape(),"0");
-				}
-				//draw temperature legend
-				if((mode == CLIMATE_STATUS)||(mode == CLIMATE_SET_POINT)){
-					//TODO
-					drawLegend(g2d);
-				}
-				//System.out.println("drawing area.  mode = "+mode);
-
 			}
 		}
 		paintCount++;

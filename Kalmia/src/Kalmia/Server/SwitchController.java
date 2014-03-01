@@ -1,3 +1,5 @@
+package Kalmia.Server;
+
 import java.awt.Polygon;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -28,7 +30,7 @@ public class SwitchController extends Thread{
 	private String logPath;
 	private File logFile;
 	private boolean switchingMode = true;
-	private boolean heatOrAC = false; //heat = true; cool = false
+	private boolean heatOrAC = true; //heat = true; cool = false
 	private DateTime lastRun = new DateTime(0);
 	private WeatherWatcher weather;
 	

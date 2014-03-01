@@ -10,6 +10,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
 
+import Kalmia.Server.CalendarListener;
+import Kalmia.Server.StatusBar;
+import Kalmia.Server.SwitchController;
+import Kalmia.Server.WeatherWatcher;
+
 
 public class UserConsole extends JFrame implements ActionListener{
 
