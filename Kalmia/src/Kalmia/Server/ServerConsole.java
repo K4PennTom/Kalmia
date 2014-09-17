@@ -179,7 +179,6 @@ public class ServerConsole extends Stage implements ActionListener{
 		weather = w;
 		statusBar.addWeather(weather);
 	}
-	@Override
 	public void actionPerformed(java.awt.event.ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		

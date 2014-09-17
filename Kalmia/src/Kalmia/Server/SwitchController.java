@@ -271,10 +271,10 @@ public class SwitchController extends Thread{
 		try {
 			Calendar cal = Calendar.getInstance();
 			DateFormat fileDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			logFile = new File(logPath+fileDateFormat.format(cal.getTime())+" SwitchController "+switchInfo.getTitle()+".LOG.csv");
+			logFile = new File(logPath+fileDateFormat.format(cal.getTime())+" SwitchController "+switchInfo.getTitle()+" log.csv");
 			
 			// if file doesn't exists, then create it
-			if (!logFile.exists()) 
+			if (!logFile.exists())
 				logFile.createNewFile();
 						
     		FileWriter fileWritter = new FileWriter(logFile.getAbsolutePath(),true);

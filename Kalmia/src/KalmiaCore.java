@@ -16,7 +16,7 @@ public class KalmiaCore extends Thread{
 	
 	private CalendarLibrary calendarLib;
 	private SwitchLibrary switcheLib;
-	private String homePath = "//home/thughes/resource_library/";
+	private String homePath = "/Kalmia/resource_library/";
 	private String calendarsFile = "calendars.csv";
 	private String switchesFile = "switches.csv";
 	private LinkedList<SwitchController> switchControllers = new LinkedList<SwitchController>();
