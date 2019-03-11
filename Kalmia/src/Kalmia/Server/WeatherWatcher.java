@@ -1,23 +1,28 @@
 package Kalmia.Server;
 import java.text.DecimalFormat;
 
-import com.amphibian.weather.request.Feature;
-import com.amphibian.weather.request.WeatherRequest;
-import com.amphibian.weather.response.Conditions;
-import com.amphibian.weather.response.WeatherResponse;
+import net.aksingh.owmjapis.core.OWM;
+import net.aksingh.owmjapis.core.OWM.Unit;
+import net.aksingh.owmjapis.api.APIException;
+import net.aksingh.owmjapis.model.CurrentWeather;
 
 public class WeatherWatcher extends Thread{ 
-	private WeatherRequest request;
-	private Conditions conditions;
+	private CurrentWeather conditions;
+	OWM owm = new OWM("638fc6615ab6129886b6a6b5e4dd3447");
 	public WeatherWatcher (){
 		
-		request = new WeatherRequest();
-		request.setApiKey("8691d2505af7dac2");
-		request.addFeature(Feature.CONDITIONS);
-		WeatherResponse resp = request.query("19803");
-		conditions = resp.getConditions();
 		//System.out.println("Weather is " + conditions.getWeather());
 		//System.out.println("Current OAT: " + getTemp() +"\u00B0 F.");
+		owm.setUnit(Unit.IMPERIAL);
+        // getting current weather data
+		query();
+
+        //printing city name from the retrieved data
+        System.out.println("City: " + conditions.getCityName());
+
+        // printing the max./min. temperature
+        System.out.println("Temperature: " + conditions.getMainData().getTempMax()
+                            + "/" + conditions.getMainData().getTempMin() + "\'K");
 	}
 	public void run(){
 		while(true){
@@ -30,15 +35,20 @@ public class WeatherWatcher extends Thread{
 		}
 	}
 	private void query(){
-		WeatherResponse resp = request.query("19803");
-		conditions = resp.getConditions();
+        try {
+			conditions = owm.currentWeatherByZipCode(19803);
+		} catch (APIException e) {
+			// TODO Auto-generated catch block
+			System.err.println("Error getting weather");
+			e.printStackTrace();
+		}
 	}
 	public String getTemp(){
-		Double temp = new Double(conditions.getTempF());
+		Double temp = conditions.getMainData().getTemp();
 		DecimalFormat df = new DecimalFormat("#.#");
 		return df.format(temp);
 	}
 	public String getWeather(){
-		return conditions.getWeather();
+		return conditions.getWeatherList().get(0).getMainInfo()+" - "+conditions.getWeatherList().get(0).getDescription();
 	}
 }

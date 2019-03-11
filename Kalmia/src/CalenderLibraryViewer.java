@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.time.ZonedDateTime;
 import java.util.LinkedList;
 
 import javax.swing.JPanel;
@@ -7,8 +8,6 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import Kalmia.Server.CalendarListener;
-
-import com.google.gdata.data.DateTime;
 
 
 public class CalenderLibraryViewer extends JPanel{
@@ -49,7 +48,7 @@ public class CalenderLibraryViewer extends JPanel{
 	    }
 
 	    public Object getValueAt(int row, int col) {
-	    	DateTime time = new DateTime(0);
+	    	ZonedDateTime time;
 	    	CalendarListener tmp = listeners.get(row);
 	    	switch (col){
 	    	case 0:
@@ -57,21 +56,23 @@ public class CalenderLibraryViewer extends JPanel{
 	    	case 1:
 	    		return tmp.getNextEventTitle();
 	    	case 2:	
-	    		return tmp.getNextEventST();
+	    		time = tmp.getNextEventST();
+	    		if(time!=null) return time.toLocalDate().toString()+",  "+time.getHour()+":"+String.format("%02d", time.getMinute());
+	    		else return "";
 	    	case 3:	
 	    		time = tmp.getLastRun();
-	    		time.setTzShift(-240);
-	    		return time.toUiString();
+	    		if(time!=null) return time.toLocalDate().toString()+",  "+time.getHour()+":"+String.format("%02d", time.getMinute());
+	    		else return "";
 	    	case 4:	
 	    		time = tmp.getNextRun();
-	    		time.setTzShift(-240);
-	    		return time.toUiString();
+	    		if(time!=null) return time.toLocalDate().toString()+",  "+time.getHour()+":"+String.format("%02d", time.getMinute());
+	    		else return "";
 	    	default:
 	    		return 0;
 	    	}
 	    }
 
-	    public Class getColumnClass(int c) {
+		public Class<String> getColumnClass(int c) {
 	    	return String.class;
 	    }
 

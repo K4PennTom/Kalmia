@@ -76,7 +76,7 @@ public class SwitchLibraryViewer extends JPanel {
 	    	}
 	    }
 
-	    public Class getColumnClass(int c) {
+		public Class<String> getColumnClass(int c) {
 	    	switch (c){
 	    	case 0:
 	    		return String.class;
